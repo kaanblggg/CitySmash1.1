@@ -7,18 +7,18 @@ public class CarController : MonoBehaviour
 {
     public static CarController Instance;
 
-    public float moveSpeed = 30f;             // Arabanın normal hızı
-    public float turboSpeed = 45f;            // Arabanın turbo hızı
-    public float turnSpeed = 50f;             // Arabanın dönüş hızı
-    public JoystickController joystick;       // Joystick script'ine referans
-    public Button turboButton;                // Turbo butonuna referans
+    public float moveSpeed = 30f;             
+    public float turboSpeed = 45f;            
+    public float turnSpeed = 50f;             
+    public JoystickController joystick;        
+    public Button turboButton;                   
 
     private Rigidbody rb;
-    private bool isTurboActive = false;       // Turbo modu aktif mi?
-    private float currentSpeed;               // Anlık hız
-    private int collectedCoins = 0;           // Toplanan altın sayısı
-    private float verticalInput;              // Dikey giriş
-    private float horizontalInput;            // Yatay giriş
+    private bool isTurboActive = false;          
+    private float currentSpeed;                
+    private int collectedCoins = 0;            
+    private float verticalInput;              
+    private float horizontalInput;            
 
     void Awake()
     {
@@ -35,26 +35,25 @@ public class CarController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // Devrilmeyi önlemek için rotasyonu kilitle
+        rb.freezeRotation = true; 
 
-        currentSpeed = moveSpeed; // Başlangıçta normal hızla başla
+        currentSpeed = moveSpeed; 
 
-        turboButton.interactable = false;     // Turbo butonunu başlangıçta devre dışı bırak
+        turboButton.interactable = false;     
         turboButton.onClick.AddListener(ActivateTurbo);
     }
 
     void Update()
     {
-        // Girişleri Update'de kontrol et
+       
         verticalInput = joystick.Vertical();
         horizontalInput = joystick.Horizontal();
     }
 
     void FixedUpdate()
     {
-        // Fiziksel hareketi FixedUpdate'de uygula
         Vector3 moveDirection = transform.forward * verticalInput * currentSpeed;
-        rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z); // Y eksenindeki mevcut hızı koru
+        rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z); 
 
         if (verticalInput != 0)
         {
@@ -68,7 +67,7 @@ public class CarController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bina"))
         {
-            // Bina ile çarpışmada yapılacak işlemler
+            
         }
     }
 
@@ -92,11 +91,11 @@ public class CarController : MonoBehaviour
 
     private IEnumerator TurboCoroutine()
     {
-        ActivateTurboMode(); // Turbo modunu etkinleştir
+        ActivateTurboMode(); 
 
-        yield return new WaitForSeconds(2f); // 2 saniye turbo süresi
+        yield return new WaitForSeconds(2f); 
 
-        DeactivateTurboMode(); // Turbo modunu devre dışı bırak
+        DeactivateTurboMode();
     }
 
     private void EnableTurboButton()
@@ -104,17 +103,17 @@ public class CarController : MonoBehaviour
         turboButton.interactable = true;
     }
 
-    // Turbo modu etkinleştiren metod
+    
     public void ActivateTurboMode()
     {
         isTurboActive = true;
-        currentSpeed = turboSpeed;  // Turbo hızını aktif et
+        currentSpeed = turboSpeed;  
     }
 
-    // Turbo modunu devre dışı bırakan metod
+    
     public void DeactivateTurboMode()
     {
         isTurboActive = false;
-        currentSpeed = moveSpeed;   // Normal hıza geri dön
+        currentSpeed = moveSpeed;   
     }
 }
